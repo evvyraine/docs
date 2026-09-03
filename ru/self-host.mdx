@@ -1,0 +1,24 @@
+---
+title: "Свой сервер"
+description: "Запустите Skye на компьютере, которым управляете."
+icon: "server"
+---
+
+Skye может работать на вашем компьютере. Компьютер должен быть включён. Она отвечает, пока он запущен.
+
+<Steps>
+  <Step title="Создайте бота в Telegram">
+    Напишите [@BotFather](https://t.me/BotFather). Скопируйте токен.
+  </Step>
+  <Step title="Установите Docker">
+    Поставьте Docker на машину, которая будет постоянно включена.
+  </Step>
+  <Step title="Скопируйте проект">
+    Клонируйте [skye-next](https://github.com/evvyraine/skye-next). Скопируйте `.env.example` в `.env`. Укажите токен бота, ваш Telegram id и ключ OpenAI.
+  </Step>
+  <Step title="Запустите">
+    В этой папке выполните `docker compose up -d`.
+  </Step>
+</Steps>
+
+Секреты держите в `.env`. Не вставляйте их в чат.
