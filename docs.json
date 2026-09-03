@@ -58,7 +58,10 @@
           },
           {
             "group": "Право",
-            "pages": []
+            "pages": [
+              "ru/privacy",
+              "ru/terms"
+            ]
           }
         ]
       }
@@ -101,7 +104,22 @@
   "footer": {
     "socials": {
       "github": "https://github.com/evvyraine/skye-next"
-    }
+    },
+    "links": [
+      {
+        "header": "Legal",
+        "items": [
+          {
+            "label": "Privacy",
+            "href": "/privacy"
+          },
+          {
+            "label": "Terms",
+            "href": "/terms"
+          }
+        ]
+      }
+    ]
   },
   "description": "A calm assistant in Telegram.",
   "appearance": {
