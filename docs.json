@@ -8,8 +8,8 @@
     "dark": "#4EA8DE"
   },
   "favicon": {
-    "light": "/images/sign-white.svg",
-    "dark": "/images/sign-main.svg"
+    "light": "/images/sign-black.svg",
+    "dark": "/images/sign-white.svg"
   },
   "navigation": {
     "pages": [
@@ -54,8 +54,8 @@
     ]
   },
   "logo": {
-    "light": "/images/logo-horizontal-white.svg",
-    "dark": "/images/logo-horizontal-black.svg",
+    "light": "/images/logo-horizontal-black.svg",
+    "dark": "/images/logo-horizontal-white.svg",
     "href": "https://skye-bot.com"
   },
   "navbar": {
