@@ -34,6 +34,12 @@
               "tools",
               "self-host"
             ]
+          },
+          {
+            "group": "Legal",
+            "pages": [
+              "privacy"
+            ]
           }
         ]
       },
@@ -48,6 +54,10 @@
               "ru/tools",
               "ru/self-host"
             ]
+          },
+          {
+            "group": "Право",
+            "pages": []
           }
         ]
       }
