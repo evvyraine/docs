@@ -4,6 +4,8 @@ description: "Connect apps, teach jobs, build helpers, and run tasks on a schedu
 icon: "plug"
 ---
 
+import { ChatDemo } from "/snippets/chat-demo.jsx"
+
 Skye is useful out of the box. You can also extend her: connect the apps you already use, teach her a repeatable job, build a helper with its own character, and let tasks run on their own.
 
 ## Connectors
@@ -63,6 +65,14 @@ Automations run a task later, without you asking.
 <Note>
   Anyone who can edit settings in a chat can manage its automations. The webhook URL and header are secrets; treat them like a password.
 </Note>
+
+<ChatDemo
+  turns={[
+    { from: "you", text: "Every weekday at 8:00, send me a short plan for the day." },
+    { from: "sky", text: "Done. It will arrive here at 8:00 on weekdays. Pause or edit it in Settings → Automations." },
+  ]}
+  note="Illustrative, not a real transcript."
+/>
 
 <Card title="Plans and access" icon="star" href="/plans">
   What is free and what comes with Skye Plus.

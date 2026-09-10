@@ -4,6 +4,8 @@ description: "Text, voice, photos, files, and groups."
 icon: "message"
 ---
 
+import { ChatDemo } from "/snippets/chat-demo.jsx"
+
 Open Telegram and message [Skye](https://t.me/skye_ai_bot). That is enough for most people.
 
 <Card title="Open Skye" icon="send" horizontal href="https://t.me/skye_ai_bot">
@@ -28,6 +30,17 @@ Skye answers in a few short messages rather than one long wall. Depending on the
 <Note>
   She decides which tools a request needs. You do not have to name a tool or a command.
 </Note>
+
+## A quick look
+
+<ChatDemo
+  turns={[
+    { from: "you", kind: "voice", text: "“Turn this into a checklist for tomorrow.”", seconds: 7 },
+    { from: "sky", text: "Three things:\n\n1. Send the invoice before noon\n2. Confirm the venue\n3. Pack the samples" },
+    { from: "sky", kind: "file", name: "tomorrow.md", meta: "markdown" },
+  ]}
+  note="Illustrative, not a real transcript."
+/>
 
 ## Everyday controls
 
