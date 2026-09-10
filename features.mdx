@@ -1,0 +1,85 @@
+---
+title: "What she can do"
+description: "Everyday abilities, in plain words."
+icon: "sparkles"
+---
+
+You do not need special phrases. Describe what you want and Skye chooses the right approach. Here is what she can do today.
+
+## Conversation with the thread
+
+Skye keeps the current conversation in mind, so follow-ups like "that one" or "make it shorter" just work. The thread is stored locally so she can continue across restarts.
+
+- A new subject is a good moment for `/reset`. It starts a clean conversation and keeps what she remembers about you.
+- `/catchup` gives you a short summary of the thread so far.
+
+See [How Skye works](/under-the-hood) for the two kinds of memory.
+
+## Voice
+
+Send a voice note and it is transcribed. Ask for an answer as a voice message and she speaks it, choosing a fitting tone and pace. Video notes are transcribed too; the video itself is not watched.
+
+## Images
+
+- **Understand.** Send a photo or screenshot to describe it, read the text in it, or check a detail.
+- **Create.** Ask for a picture. "A calm, minimal poster for a reading list."
+- **Edit.** Reply to a photo with an instruction and she changes that photo.
+
+Ask for several images when you want variants. Finished pictures arrive automatically as photos.
+
+## Documents and files
+
+Send a file and Skye can work with it:
+
+- PDF documents, read directly.
+- Word, Excel, and PowerPoint files.
+- Plain text, Markdown, CSV, JSON, code, and config files.
+- Photos of documents, read as images.
+
+Typical asks: "summarise this", "pull every date and amount", "compare these two versions", "find the risks". Unusual formats are handled in her workspace, below.
+
+## Search and the web
+
+Skye searches the web and reads pages you link, then answers with sources. She reads YouTube transcripts too, so you can ask what a video says with only a link.
+
+## Files, code, and a private workspace
+
+When a task needs real files or code, Skye uses an isolated workspace where she can:
+
+- run shell commands and Python;
+- read and write files;
+- keep the workspace between messages, so a project from yesterday is still there;
+- hand finished files back to you automatically.
+
+Each person has their own workspace. In a group, the group shares one.
+
+<Info>
+The workspace runs in a separate container with no access to the host. Whether it can reach the internet depends on how the instance is set up.
+</Info>
+
+## Memory
+
+Skye can remember small facts you want kept: a preference, a name, a recurring instruction.
+
+- Say "remember that ..." or ask her to save something.
+- Say "forget ..." to remove it.
+- Private memories stay private; group memories are shared with the group.
+- Turn memory off, or delete everything saved, in Settings.
+
+## Projects
+
+Keep separate conversations for separate work. Each project has its own history and optional instructions. Read [Projects](/projects).
+
+## Groups and topics
+
+Skye works in groups and forum topics. Each topic has its own conversation; the group shares its settings and memory. Read [Write to her](/chat).
+
+## Where she stops
+
+- She does not watch video, only its transcript or a short placeholder.
+- She does not run code on the host; code runs only in the isolated workspace.
+- She can be wrong. Check important facts.
+
+<Card title="Extend her" icon="plug" href="/tools" horizontal>
+  Connectors, skills, custom agents, and automations.
+</Card>

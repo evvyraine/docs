@@ -1,24 +1,108 @@
 ---
 title: "Run it yourself"
-description: "Put Skye on a computer you control."
+description: "Put Skye on a computer you control, start to finish."
 icon: "server"
 ---
 
-Skye can run on a computer you own. Keep that computer on. She only answers while it is running.
+Skye is self-hostable. Run it on a machine you own and keep it on; she answers only while it is running. This page is the operator guide, so it is more technical than the rest of these docs.
+
+## What you need
+
+- A machine that stays on, with **Docker** and **Docker Compose**.
+- A **Telegram bot token** from [@BotFather](https://t.me/BotFather).
+- A model endpoint that speaks the OpenAI API. Any OpenAI-compatible base URL works, for example OpenAI or OpenRouter.
+- Your **Telegram user id** as the owner. A bot such as `@userinfobot` can tell you.
+
+## Install
 
 <Steps>
-  <Step title="Make a Telegram bot">
-    Talk to [@BotFather](https://t.me/BotFather). Copy the token he gives you.
-  </Step>
-  <Step title="Install Docker">
-    Install Docker on the machine that will stay on.
+  <Step title="Create the bot">
+    Talk to [@BotFather](https://t.me/BotFather) and copy the token. Do not paste secrets into chat.
   </Step>
   <Step title="Copy the project">
-    Clone [skye-next](https://github.com/evvyraine/skye-next). Copy `.env.example` to `.env`. Put in the bot token, your Telegram user id, and an OpenAI key.
+    Clone [skye-next](https://github.com/evvyraine/skye-next) and enter the folder.
   </Step>
-  <Step title="Start it">
-    Run `docker compose up -d` in that folder.
+  <Step title="Configure">
+    Copy `.env.example` to `.env` and fill in at least the required values below.
+  </Step>
+  <Step title="Start">
+    Run `docker compose up -d`. Follow the logs with `docker compose logs -f`.
+  </Step>
+  <Step title="Update">
+    Pull the latest code and run `docker compose up -d --build`.
   </Step>
 </Steps>
 
-Keep secrets in `.env`. Do not paste them into chat.
+## Required settings
+
+| Variable | What it is |
+| --- | --- |
+| `TELEGRAM_BOT_TOKEN` | The token from BotFather. |
+| `SKYE_OWNER_IDS` | Your Telegram user id. Comma-separated for several owners. The owner is always allowed. |
+| `SKYE_PROVIDER_API_KEY` | Key for the model provider. |
+| `SKYE_PROVIDER_BASE_URL` | API root, for example `https://openrouter.ai/api/v1`. |
+| `OPENAI_API_KEY` | Legacy alias, used only when the values above are unset. |
+
+At least one provider key is required. If you set an OpenRouter key with no explicit base URL, `https://openrouter.ai/api/v1` is used.
+
+## Models
+
+Skye is provider-agnostic. Each role is a model your provider offers.
+
+| Variable | Role | Example |
+| --- | --- | --- |
+| `SKYE_DEFAULT_MODEL` | Chat and reasoning. | `deepseek/deepseek-v4.1-flash` |
+| `SKYE_IMAGE_MODEL` | Image generation and editing. | `microsoft/mai-image-2.6` |
+| `SKYE_SPEECH_MODEL` | Voice replies. | `google/gemini-3.1-flash-tts-preview` |
+| `SKYE_TRANSCRIPTION_MODEL` | Voice-note transcription. | `nvidia/parakeet-tdt-0.6b-v3` |
+| `SKYE_SPEECH_VOICE` | Voice for spoken replies. | `Aoede` |
+
+<Note>
+  If a provider rejects audio or non-PDF file parts, leave `SKYE_NATIVE_MEDIA=false` (the default). Skye then transcribes audio and extracts text locally, which works with text-and-image models such as DeepSeek V4.
+</Note>
+
+## Web chat
+
+The browser app is optional and off until configured.
+
+| Variable | What it is |
+| --- | --- |
+| `SKYE_WEB_ORIGIN` | Public origin, for example `https://chat.skye-bot.com`. |
+| `TELEGRAM_LOGIN_CLIENT_ID` | Login widget client id from BotFather. |
+| `TELEGRAM_LOGIN_CLIENT_SECRET` | Login widget secret. |
+| `SKYE_WEB_FILES_PATH` | Where uploaded and generated files are stored. |
+
+The container listens on `SKYE_WEB_HOST`:`SKYE_WEB_PORT` (by default `127.0.0.1:8080`). Put a reverse proxy in front for TLS.
+
+## Code workspace
+
+The sandbox that runs shell and Python is off by default.
+
+| Variable | What it does |
+| --- | --- |
+| `SKYE_SANDBOX_ENABLED` | Turn the workspace on. |
+| `SKYE_SANDBOX_IMAGE` | Image for command containers (default `python:3.14-slim`). |
+| `SKYE_SANDBOX_ALLOW_NETWORK` | Let commands reach the internet. |
+| `SKYE_SANDBOX_TTL_SECONDS` | Delete an idle workspace after this long (default 7 days). |
+| `SKYE_SANDBOX_SCOPE_BYTES` | Per-workspace size cap (default 1 GiB). |
+| `SKYE_SANDBOX_TOTAL_BYTES` | Total cap across all workspaces (default 20 GiB). |
+| `SKYE_SANDBOX_MAX_CONCURRENT` | Maximum commands running at once. |
+
+The bot container reaches the host Docker socket; the provided `compose.yaml` mounts it. Commands run in throwaway containers as a non-root user with no host access. See [How Skye works](/under-the-hood).
+
+## Access control
+
+Access is deny-by-default for groups.
+
+- Direct chats are open to everyone unless banned.
+- The owner is always allowed.
+- A group is allowed if it is on the allowlist, or if a group admin has Skye Plus or complimentary access.
+- Use `/admin` in a private chat to allow or ban people and groups.
+
+## Where data lives
+
+Settings, memories, skills, agents, automations, and web projects live in a local SQLite database (`SKYE_DATABASE_PATH`). Web files live under `SKYE_WEB_FILES_PATH`. Code workspaces live on the `skye-sandbox-work` Docker volume. Back up the database and those paths together.
+
+## A safe default
+
+Keep `.env` out of version control, expose the web port only through a proxy, and leave the sandbox network off unless a task truly needs it.
