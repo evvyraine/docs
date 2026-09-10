@@ -15,27 +15,28 @@
  * Turns support: text (default), voice, image, file, code, working, sources.
  * Kept dependency-free and intentionally plain. No avatars, no timestamps.
  *
- * Everything lives inside the exported component on purpose: Mintlify inlines
- * only the exported symbol from a snippet, so module-level helpers would be
- * dropped and referenced as missing components.
+ * Two Mintlify constraints shape this file:
+ *   1. Only the exported symbol is inlined from a snippet, so everything must
+ *      live inside ChatDemo.
+ *   2. The scoped CSS only picks up class names written as static literals in
+ *      a className. Anything in a variable or an interpolation is ignored, so
+ *      every className here is a plain literal and all dynamic appearance
+ *      (colours, alignment, gradient) uses inline styles instead.
  */
 
 export const ChatDemo = ({ turns = [] }) => {
+  const items = Array.isArray(turns) ? turns : [];
+
   const tones = {
-    indigo: "from-indigo-100 to-sky-100 dark:from-indigo-500/20 dark:to-sky-500/20",
-    violet: "from-violet-100 to-fuchsia-100 dark:from-violet-500/20 dark:to-fuchsia-500/20",
-    emerald: "from-emerald-100 to-teal-100 dark:from-emerald-500/20 dark:to-teal-500/20",
-    amber: "from-amber-100 to-orange-100 dark:from-amber-500/20 dark:to-orange-500/20",
-    rose: "from-rose-100 to-pink-100 dark:from-rose-500/20 dark:to-pink-500/20",
-    slate: "from-zinc-100 to-zinc-200 dark:from-zinc-700/40 dark:to-zinc-800/60",
+    indigo: ["rgba(99, 102, 241, 0.16)", "rgba(56, 189, 248, 0.16)"],
+    violet: ["rgba(139, 92, 246, 0.16)", "rgba(217, 70, 239, 0.14)"],
+    emerald: ["rgba(16, 185, 129, 0.16)", "rgba(20, 184, 166, 0.14)"],
+    amber: ["rgba(245, 158, 11, 0.18)", "rgba(249, 115, 22, 0.14)"],
+    rose: ["rgba(244, 63, 94, 0.14)", "rgba(236, 72, 153, 0.14)"],
+    slate: ["rgba(120, 120, 130, 0.14)", "rgba(90, 90, 100, 0.12)"],
   };
 
   const wave = [7, 12, 9, 16, 11, 6, 14, 10, 5];
-
-  const bubbleClass = (from) =>
-    from === "you"
-      ? "bg-[#5E60CE] text-white"
-      : "bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-100";
 
   const formatSeconds = (seconds) => {
     if (typeof seconds !== "number" || !isFinite(seconds)) return "";
@@ -83,69 +84,61 @@ export const ChatDemo = ({ turns = [] }) => {
     </svg>
   );
 
-  const bubble = (from, className, children) => (
-    <div className={from === "you" ? "flex justify-end" : "flex justify-start"}>
-      <div
-        className={`max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-relaxed ${bubbleClass(
-          from,
-        )} ${className || ""}`}
-      >
-        {children}
-      </div>
-    </div>
-  );
-
-  const muted = (from, children) => (
-    <div className={from === "you" ? "flex justify-end" : "flex justify-start"}>
-      <p className="m-0 max-w-[88%] px-1 text-xs text-zinc-400 dark:text-zinc-500">{children}</p>
-    </div>
-  );
-
   const renderTurn = (turn) => {
     const item = turn || {};
     const from = item.from === "you" ? "you" : "sky";
     const kind = item.kind || "text";
+    const align = { justifyContent: from === "you" ? "flex-end" : "flex-start" };
+    const bubble = from === "you"
+      ? { backgroundColor: "#5E60CE", color: "#ffffff" }
+      : { backgroundColor: "rgba(128, 128, 136, 0.13)" };
 
     if (kind === "voice") {
       return (
         <div className="flex flex-col gap-1.5">
-          {bubble(
-            from,
-            "flex items-center gap-2.5 py-2",
-            <>
-              {playIcon()}
-              <span className="flex h-4 items-center gap-[3px]">
-                {wave.map((height, bar) => (
-                  <span
-                    key={bar}
-                    className="w-[2px] rounded-full bg-current opacity-70"
-                    style={{ height: `${height}px` }}
-                  />
-                ))}
+          <div className="flex" style={align}>
+            <div
+              className="max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-relaxed"
+              style={bubble}
+            >
+              <span className="flex items-center gap-2.5">
+                {playIcon()}
+                <span className="flex h-4 items-center gap-[3px]">
+                  {wave.map((height, bar) => (
+                    <span
+                      key={bar}
+                      className="w-[2px] rounded-full bg-current opacity-70"
+                      style={{ height: `${height}px` }}
+                    />
+                  ))}
+                </span>
+                <span className="text-xs tabular-nums opacity-80">
+                  {item.label || formatSeconds(item.seconds)}
+                </span>
               </span>
-              <span className="text-xs tabular-nums opacity-80">
-                {item.label || formatSeconds(item.seconds)}
-              </span>
-            </>,
-          )}
-          {item.text ? muted(from, item.text) : null}
+            </div>
+          </div>
+          {item.text ? (
+            <div className="flex" style={align}>
+              <p className="m-0 max-w-[88%] px-1 text-xs text-zinc-400 dark:text-zinc-500">
+                {item.text}
+              </p>
+            </div>
+          ) : null}
         </div>
       );
     }
 
     if (kind === "image") {
+      const tone = tones[item.tone] || tones.indigo;
       return (
         <div
-          className={
-            from === "you"
-              ? "flex flex-col items-end gap-1.5"
-              : "flex flex-col items-start gap-1.5"
-          }
+          className="flex flex-col gap-1.5"
+          style={{ alignItems: from === "you" ? "flex-end" : "flex-start" }}
         >
           <div
-            className={`flex h-32 w-44 items-center justify-center rounded-2xl border border-black/5 bg-gradient-to-br text-zinc-500/70 dark:border-white/10 dark:text-zinc-300/70 ${
-              tones[item.tone] || tones.indigo
-            }`}
+            className="flex h-32 w-44 items-center justify-center rounded-2xl border border-black/5 text-zinc-400 dark:border-white/10 dark:text-zinc-500"
+            style={{ backgroundImage: `linear-gradient(135deg, ${tone[0]}, ${tone[1]})` }}
           >
             {imageIcon()}
           </div>
@@ -159,32 +152,47 @@ export const ChatDemo = ({ turns = [] }) => {
     }
 
     if (kind === "file") {
-      return bubble(
-        from,
-        "flex items-center gap-2.5",
-        <>
-          <span className="opacity-80">{fileIcon()}</span>
-          <span className="flex flex-col leading-tight">
-            <span className="font-medium">{item.name}</span>
-            {item.meta ? <span className="text-xs opacity-70">{item.meta}</span> : null}
-          </span>
-        </>,
+      return (
+        <div className="flex" style={align}>
+          <div
+            className="max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-relaxed"
+            style={bubble}
+          >
+            <span className="flex items-center gap-2.5">
+              <span className="opacity-80">{fileIcon()}</span>
+              <span className="flex flex-col leading-tight">
+                <span className="font-medium">{item.name}</span>
+                {item.meta ? <span className="text-xs opacity-70">{item.meta}</span> : null}
+              </span>
+            </span>
+          </div>
+        </div>
       );
     }
 
     if (kind === "code") {
-      return bubble(
-        from,
-        "font-mono text-[12px]",
-        <pre className="m-0 whitespace-pre-wrap break-words font-mono">{item.text}</pre>,
+      return (
+        <div className="flex" style={align}>
+          <div
+            className="max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-relaxed"
+            style={bubble}
+          >
+            <pre className="m-0 whitespace-pre-wrap break-words font-mono text-xs">
+              {item.text}
+            </pre>
+          </div>
+        </div>
       );
     }
 
     if (kind === "working") {
       return (
-        <div className="flex justify-start">
+        <div className="flex" style={{ justifyContent: "flex-start" }}>
           <p className="m-0 flex items-center gap-2 px-1 py-0.5 text-xs text-zinc-400 dark:text-zinc-500">
-            <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[#5E60CE]" />
+            <span
+              className="inline-block h-1.5 w-1.5 animate-pulse rounded-full"
+              style={{ backgroundColor: "#5E60CE" }}
+            />
             <span>{item.text}</span>
           </p>
         </div>
@@ -193,7 +201,7 @@ export const ChatDemo = ({ turns = [] }) => {
 
     if (kind === "sources") {
       return (
-        <div className="flex justify-start">
+        <div className="flex" style={{ justifyContent: "flex-start" }}>
           <div className="flex max-w-[88%] flex-col gap-1 px-1">
             {(item.links || []).map((link, index) => (
               <a
@@ -201,7 +209,8 @@ export const ChatDemo = ({ turns = [] }) => {
                 href={link.href}
                 target="_blank"
                 rel="noreferrer"
-                className="text-xs text-[#5E60CE] underline underline-offset-2 dark:text-[#9AA0FF]"
+                className="text-xs underline underline-offset-2"
+                style={{ color: "#7c7ee0" }}
               >
                 {link.label}
               </a>
@@ -211,10 +220,17 @@ export const ChatDemo = ({ turns = [] }) => {
       );
     }
 
-    return bubble(from, null, <span className="whitespace-pre-line">{item.text}</span>);
+    return (
+      <div className="flex" style={align}>
+        <div
+          className="max-w-[88%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-relaxed"
+          style={bubble}
+        >
+          <span className="whitespace-pre-line">{item.text}</span>
+        </div>
+      </div>
+    );
   };
-
-  const items = Array.isArray(turns) ? turns : [];
 
   return (
     <div className="not-prose my-4 rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900/60 sm:p-5">
