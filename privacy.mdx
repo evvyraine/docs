@@ -4,23 +4,37 @@ description: "What Skye collects, and what we do with it."
 icon: "shield"
 ---
 
-Skye is a personal assistant in Telegram.
+Skye is a personal assistant in Telegram. This page explains what she handles, and why.
 
 ## What we receive
 
-Messages, photos, voice notes, and files you send. Your Telegram user id. If you connect an app, that app sees what you allow.
+- Messages, photos, voice notes, video notes, and files you send, and the captions that come with them.
+- Your Telegram user id and display name, so she can tell people apart.
+- In a group, the recent messages needed to understand the thread, and the group's title.
+- If you connect an app, that service sees what you allow. Credentials stay with the connector provider.
+- If you use the web chat, a login session from Telegram.
 
 ## What we do with it
 
-We use it to reply and to run the jobs you ask for. We do not sell it.
+We process it to reply, to run the tasks you ask for, and to use the tools you connect. We do not sell it and we do not use it to train models.
 
 ## Where it lives
 
-If you run Skye on your own computer, it stays there. If you use a hosted instance, it is stored there so the service can run.
+- If you run Skye yourself, everything stays on your machine.
+- On a hosted instance, it is stored there so the service can run.
+
+Conversations, memories, skills, agents, automations, and projects are stored in a local database. Web files and code workspaces are stored on the same machine. Logs redact tokens, prompts, memory contents, and file bodies.
+
+## Keeping and deleting
+
+- `/reset` clears the working conversation. Durable memories stay until you delete them.
+- Turn memory off, or delete everything saved, in Settings.
+- Delete a project to remove its conversation.
+- In a group, group memory and shared skills are visible to the group.
 
 ## Telegram
 
-The chat also goes through Telegram, under [Telegram’s privacy policy](https://telegram.org/privacy).
+The chat also passes through Telegram, under [Telegram's privacy policy](https://telegram.org/privacy).
 
 ## Questions
 

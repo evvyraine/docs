@@ -31,8 +31,19 @@
             "pages": [
               "index",
               "chat",
+              "features",
               "tools",
-              "self-host"
+              "projects",
+              "plans",
+              "commands"
+            ]
+          },
+          {
+            "group": "Advanced",
+            "icon": "wrench",
+            "pages": [
+              "self-host",
+              "under-the-hood"
             ]
           },
           {
@@ -52,8 +63,19 @@
             "pages": [
               "ru/index",
               "ru/chat",
+              "ru/features",
               "ru/tools",
-              "ru/self-host"
+              "ru/projects",
+              "ru/plans",
+              "ru/commands"
+            ]
+          },
+          {
+            "group": "Расширенное",
+            "icon": "wrench",
+            "pages": [
+              "ru/self-host",
+              "ru/under-the-hood"
             ]
           },
           {

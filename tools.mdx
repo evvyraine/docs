@@ -1,11 +1,69 @@
 ---
 title: "Your tools"
-description: "Connect the apps you already use. Teach her a job once."
+description: "Connect apps, teach jobs, build helpers, and run tasks on a schedule."
 icon: "plug"
 ---
 
-In the chat, open Settings. Pick an app. Allow access.
+Skye is useful out of the box. You can also extend her: connect the apps you already use, teach her a repeatable job, build a helper with its own character, and let tasks run on their own.
 
-For a job she should repeat, send a short instruction. Next time you ask, she follows it.
+## Connectors
 
-You can also make a helper with its own name and rules. Talk to that helper, or keep Skye in charge.
+Connectors let Skye use an outside service for you. Popular ones include Gmail, GitHub, Slack, Notion, Google Calendar, Google Drive, Linear, and Outlook, plus any custom MCP server you run.
+
+- Open **Settings → Connectors**. Pick a service and connect it.
+- Credentials stay with the connector provider, not in Telegram.
+- Connectors are per person. Your private list is yours.
+- In a group, the owner can share one connector with that group. Anyone there can then ask Skye to use it, and the owner can revoke the share.
+
+<Warning>
+  Connecting an account gives Skye the access that service grants. Start with read-only where the service allows it.
+</Warning>
+
+## Skills
+
+A skill is a folder of instructions Skye reads before doing a job. It is a `SKILL.md` file, or a `.zip` bundle with a `SKILL.md` inside.
+
+- Open **Settings → Skills** and upload one.
+- Skills are scoped like memory: yours are private; group skills are shared with the group.
+- When you ask for that job, Skye reads the skill and follows it.
+- You can add up to 16 skills per chat.
+
+A `SKILL.md` starts with a small header:
+
+```md
+---
+name: reading-list
+description: Turn a list of links into a tidy reading list.
+---
+
+Then the steps or rules she should follow.
+```
+
+## Custom agents
+
+An agent is a helper with its own name, description, and instructions. Talk to it directly, or keep Skye in charge and let her hand work to it.
+
+- Open `/agents` or **Settings → Agent**.
+- **Create.** Give a name, a short description, and instructions (up to 12,000 characters). Choose which abilities it may use: web, images, and the code workspace.
+- **Activate.** The selected agent leads the chat; the others stay available as specialists Skye can consult.
+- **Share.** A share link installs an immutable copy. Later edits to your original do not change anyone's installed copy.
+- **Remove.** Removes it from this chat.
+
+Creating and editing agents is a Skye Plus feature. See [Plans](/plans).
+
+## Automations
+
+Automations run a task later, without you asking.
+
+- **Scheduled.** A cron rule with a timezone. "Every weekday at 9:00, send me a short plan for the day."
+- **Webhook.** A private URL and header. When something calls it, Skye runs the task in this chat and can use the request body.
+- Ask Skye to create one, or manage them in **Settings → Automations**. You can pause, edit, and delete them.
+- A chat can hold up to 20 automations.
+
+<Note>
+  Anyone who can edit settings in a chat can manage its automations. The webhook URL and header are secrets; treat them like a password.
+</Note>
+
+<Card title="Plans and access" icon="star" href="/plans">
+  What is free and what comes with Skye Plus.
+</Card>

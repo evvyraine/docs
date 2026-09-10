@@ -1,0 +1,62 @@
+---
+title: "How Skye works"
+description: "The moving parts behind a calm chat."
+icon: "cpu"
+---
+
+This page is for the curious and for operators. Everything here is optional reading.
+
+## One turn
+
+When you send a message, Skye:
+
+1. records the update so nothing is processed twice;
+2. assembles the context: her instructions, the active agent, relevant memories, your message, and any attachments;
+3. sends it to the model, which may call tools;
+4. delivers what the tools produce, then the reply.
+
+Runs are serialised per chat, so two messages in the same conversation never interleave. Different chats run at the same time.
+
+## Tools, not plugins
+
+Skye is built from function tools over a plain chat-completions API:
+
+- `send_message` and `send_voice` — her only user-visible output;
+- `generate_image` and `edit_image` — pictures;
+- `web_search` and `web_fetch` — the web;
+- `shell_exec`, `python`, `read_file`, `write_file` — the code workspace;
+- `read_skill` — skill bundles;
+- `remember`, `recall`, `forget` — memory;
+- `youtube_get_transcript` — video captions;
+- automation tools, and the apps you connect.
+
+There are no hosted provider tools. Every capability is one of ours, which is what lets Skye point at any OpenAI-compatible endpoint.
+
+## Two kinds of memory
+
+- **The working conversation** is the running thread, replayed each turn from a local store. `/reset` starts a new one.
+- **Durable memory** is small facts saved on purpose. Private facts are per person; group facts are per group. A group never sees a participant's private facts.
+
+## The code workspace
+
+Each person, and each group, gets a workspace on a shared volume. Every command runs in a fresh container that mounts only that workspace, runs as a non-root user, has a read-only root filesystem, and drops all capabilities. Files persist between commands; the container does not. A janitor loop removes idle workspaces after the time-to-live and enforces size caps.
+
+## Groups
+
+Only messages after Skye's last turn in a topic are attached, as untrusted user content. The bot stays quiet unless it is mentioned, replied to, invoked by command, or named. Each forum topic has its own conversation but shares the group's settings and memory.
+
+## Automations and connectors
+
+- Automations are an in-process scheduler in the bot. Webhooks arrive at `POST /automations/{id}/hook`, authenticated by a stored header.
+- Connectors attach through a local MCP bridge. The bot never hands a provider a hosted tool, and a connector is shared with a group only when its owner says so.
+
+## Privacy by design
+
+- Logs are structured and redact tokens, prompts, memory contents, and file bodies.
+- Provider requests carry a privacy-preserving `safety_identifier` derived from your user id, never the raw id.
+- Tracing is off by default.
+- A code workspace never touches the host; code runs only in the container.
+
+<Card title="Run it yourself" icon="server" href="/self-host" horizontal>
+  Full setup and configuration.
+</Card>
