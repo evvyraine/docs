@@ -1,0 +1,114 @@
+---
+title: "In practice"
+description: "What a request looks like, and what comes back."
+icon: "messages"
+---
+
+import { ChatDemo } from "/snippets/chat-demo.jsx"
+
+You do not need to phrase things carefully. Say what you want in your own words and Skye works out the rest. Below are real shapes of conversation. The prompts are short on purpose, and the transcripts are illustrative.
+
+## A voice note becomes a plan
+
+Send a rambling voice note; get back something you can keep.
+
+<ChatDemo
+  turns={[
+    { from: "you", kind: "voice", text: "“Okay, this week: finish the deck, book the dentist, pick a gift for mom, and don’t forget the quarterly report.”", seconds: 13 },
+    { from: "sky", text: "Here is a week you can keep:\n\nMon–Tue — finish the deck\nWed — quarterly report\nThu — dentist\nFri — gift for your mom" },
+    { from: "sky", kind: "file", name: "week-plan.md", meta: "markdown · 2 KB" },
+  ]}
+/>
+
+## A screenshot, read in seconds
+
+Send a photo or a screenshot and ask the question you actually have.
+
+<ChatDemo
+  turns={[
+    { from: "you", kind: "image", tone: "slate", caption: "receipt.jpg" },
+    { from: "you", text: "What is the total here, and is anything off?" },
+    { from: "sky", text: "The total is €148.20. Two rows are charged twice — rows 3 and 4 — so it should be €96.40. Want a short refund note?" },
+  ]}
+/>
+
+## A picture, created and then adjusted
+
+You can iterate the way you would with a designer.
+
+<ChatDemo
+  turns={[
+    { from: "you", text: "Make a calm, minimal poster for my reading list. Muted colours, lots of space." },
+    { from: "sky", kind: "image", tone: "violet", caption: "reading-list.png" },
+    { from: "you", text: "Warmer, and add “Winter 2026”." },
+    { from: "sky", kind: "image", tone: "amber", caption: "reading-list-v2.png" },
+  ]}
+/>
+
+## A document, turned into decisions and risks
+
+Long files become the few things you need to act on.
+
+<ChatDemo
+  turns={[
+    { from: "you", kind: "file", name: "supplier-agreement.pdf", meta: "PDF · 24 pages" },
+    { from: "you", text: "Summarise the decisions and flag the risks." },
+    { from: "sky", text: "Decisions:\n• 12-month term, renews automatically\n• Payment net 30\n• Exclusivity only in the EU\n\nRisks:\n• Auto-renew with a 60-day notice window\n• The penalty clause is uncapped" },
+    { from: "sky", kind: "file", name: "agreement-notes.md", meta: "markdown · 4 KB" },
+  ]}
+/>
+
+## A question answered from the web
+
+Fresh facts, with the sources attached.
+
+<ChatDemo
+  turns={[
+    { from: "you", text: "What changed in the EU roaming rules this year?" },
+    { from: "sky", kind: "working", text: "Searching the web…" },
+    { from: "sky", text: "Two changes matter: the fair-use data cap rises, and calls between member states are priced like domestic ones." },
+    { from: "sky", kind: "sources", links: [ { label: "ec.europa.eu — roaming", href: "https://ec.europa.eu/roaming" }, { label: "gsma.com — fair use", href: "https://www.gsma.com" } ] },
+  ]}
+/>
+
+## A messy file, cleaned up
+
+When a task needs real files or code, she uses the isolated workspace.
+
+<ChatDemo
+  turns={[
+    { from: "you", kind: "file", name: "orders.csv", meta: "CSV · 4,812 rows" },
+    { from: "you", text: "Clean this up and give me the top 10 by revenue as a spreadsheet." },
+    { from: "sky", kind: "working", text: "Running Python in the workspace…" },
+    { from: "sky", text: "Done. Removed 37 duplicate rows, normalised the dates, and ranked by revenue." },
+    { from: "sky", kind: "file", name: "top-10-orders.xlsx", meta: "spreadsheet · 18 KB" },
+  ]}
+/>
+
+## A preference she remembers
+
+Tell her once; she applies it later without being asked.
+
+<ChatDemo
+  turns={[
+    { from: "you", text: "Remember that I always want amounts in euros and dates as YYYY-MM-DD." },
+    { from: "sky", text: "Saved." },
+    { from: "you", text: "Draft a short invoice summary for March." },
+    { from: "sky", text: "March 2026 — €1,240.00, due 2026-03-31. Two line items, one discount. Want it as a file?" },
+  ]}
+/>
+
+## A task that comes back on its own
+
+Set it once and it runs in this chat.
+
+<ChatDemo
+  turns={[
+    { from: "you", text: "Every weekday at 8:00, send me a short plan for the day and anything I should not miss." },
+    { from: "sky", text: "Done. It will arrive here at 8:00 on weekdays. Pause or edit it in Settings → Automations." },
+    { from: "sky", kind: "working", text: "Scheduled run — Monday, 8:00" },
+    { from: "sky", text: "Good morning. Today:\n\n1. Deck review at 11:00\n2. Reply to Anna\n3. Quarterly report is due Friday\n\nNothing else on your plate." },
+  ]}
+/>
+
+These are illustrative, not exact transcripts. The words differ, but the shape is real. Ready to try it? [Open Skye](https://t.me/skye_ai_bot).

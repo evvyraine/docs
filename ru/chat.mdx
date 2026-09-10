@@ -4,6 +4,8 @@ description: "Текст, голос, фото, файлы и группы."
 icon: "message"
 ---
 
+import { ChatDemo } from "/snippets/chat-demo.jsx"
+
 Откройте Telegram и напишите [Skye](https://t.me/skye_ai_bot). Для большинства этого достаточно.
 
 <Card title="Открыть Skye" icon="send" horizontal href="https://t.me/skye_ai_bot">
@@ -28,6 +30,18 @@ Skye отвечает несколькими короткими сообщени
 <Note>
   Она сама решает, какие инструменты нужны. Называть инструмент или команду не обязательно.
 </Note>
+
+## Короткий пример
+
+<ChatDemo
+  turns={[
+    { from: "you", kind: "voice", text: "«Сделай из этого чек-лист на завтра.»", seconds: 7 },
+    { from: "sky", text: "Три дела:\n\n1. Отправить счёт до полудня\n2. Подтвердить площадку\n3. Собрать образцы" },
+    { from: "sky", kind: "file", name: "завтра.md", meta: "markdown" },
+  ]}
+/>
+
+_Иллюстрация, а не дословная расшифровка._
 
 ## Повседневное управление
 

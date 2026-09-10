@@ -4,6 +4,8 @@ description: "Everyday abilities, in plain words."
 icon: "sparkles"
 ---
 
+import { ChatDemo } from "/snippets/chat-demo.jsx"
+
 You do not need special phrases. Describe what you want and Skye chooses the right approach. Here is what she can do today.
 
 ## Conversation with the thread
@@ -26,6 +28,15 @@ Send a voice note and it is transcribed. Ask for an answer as a voice message an
 - **Edit.** Reply to a photo with an instruction and she changes that photo.
 
 Ask for several images when you want variants. Finished pictures arrive automatically as photos.
+
+<ChatDemo
+  turns={[
+    { from: "you", kind: "image", tone: "slate", caption: "screenshot.png" },
+    { from: "sky", text: "This is an invoice for €148.20. Two rows repeat, so the correct total is €96.40." },
+  ]}
+/>
+
+_Illustrative, not a real transcript._
 
 ## Documents and files
 
