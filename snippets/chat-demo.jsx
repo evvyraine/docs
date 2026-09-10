@@ -20,7 +20,7 @@
  * dropped and referenced as missing components.
  */
 
-export const ChatDemo = ({ turns = [], note }) => {
+export const ChatDemo = ({ turns = [] }) => {
   const tones = {
     indigo: "from-indigo-100 to-sky-100 dark:from-indigo-500/20 dark:to-sky-500/20",
     violet: "from-violet-100 to-fuchsia-100 dark:from-violet-500/20 dark:to-fuchsia-500/20",
@@ -223,9 +223,6 @@ export const ChatDemo = ({ turns = [], note }) => {
           <div key={index}>{renderTurn(turn)}</div>
         ))}
       </div>
-      {note ? (
-        <p className="mb-0 mt-4 text-xs text-zinc-400 dark:text-zinc-500">{note}</p>
-      ) : null}
     </div>
   );
 };
